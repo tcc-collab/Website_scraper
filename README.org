@@ -1,0 +1,67 @@
+    
+* TCC-webapi
+  This is API for web resources that are scraped and distributed by TCC-web dev team.
+  The included sites are : 
+  - [[http://trinitycollege.edu.np][Trinity college, Dilibazar, Kathmandu]]
+
+** Requirements to use 
+   - Knowledge of working with json data in your programming language.
+   = Knowledge of sending http requests and receiving data.
+
+** Getting Started
+   The api currently doesnot feature any login or auth. Note however, this may change.
+  
+*** API endpoints
+    The trinity website can visually divided into follwing parts
+    - top logo image
+    - main menus
+    - side menus
+    - notice
+    - events
+    - news
+    - login
+   
+    Thus you can access these parts with '/trinity/<topic>' url suffix
+    
+    1. To access top notices;
+    eg: 
+    'https://tcc_webapi.herokuapp.com/trinity/notice'
+    This will give you json data of the top 3/4 notices visible on homepage of website
+    
+    2. For more flexibility, you can add arguements like
+    - '?all=True'
+    - '?page_link'
+    eg:
+    'https://tcc_webapi.herokuapp.com/trinity/notice?all=True'
+    
+    This will give you a json data of all notices.
+    
+***** Json Data
+      In the eg of 1st no above. No arguements have been passed so top 3/4 notices will be returned.
+      A json object with following attributes will be returned
+      - title -> Title of notice
+      - link -> URL of page for this notice 
+        
+      eg:
+      {
+      "title": 'First Term Examinations 2076',
+      "link": 'http://trinitycollege.edu.np?page=notice&type=notice&id=457ps'
+      }
+      
+      In the second example of '?all=True'. All notices was requested. Note that here, some extra properties will also be added;
+      - title -> Title of notice
+      - link -> URL of page for this notice 
+      - date -> Date when notice was issued
+      - content -> small description of notice
+     eg:
+     {
+      "title": 'First Term Examinations 2076',
+      "link": 'http://trinitycollege.edu.np?page=notice&type=notice&id=457ps'
+      "date": 'Monday, 12 Aug 2019'
+      "content": 'Notice'
+      }
+      *NOTE* The content most of the time will be 'Notice' only or some short text
+
+    The usage of all others are similar with only diffrent aspect being the url, arguements and the attributes of returning obejects.
+    The description and usage details of other endpoints are in documentation below.
+ 
