@@ -2,11 +2,7 @@
 Navigation: main.py module
 """
 
-from requests_html import HTML
-
-# from src.scrapers import fetch_html
-# from src.scrapers import TRINITY_LINK as url
-url = "http://trinitycollege.edu.np"
+from src.scrapers import TRINITY_LINK as url
 
 
 def get_side_nav_menu(html_soup):
@@ -35,10 +31,10 @@ def get_side_nav_menu(html_soup):
         menu_dict = {"name": name, "link": full_link, "image": image}
         side_menus.append(menu_dict)
 
-    return top_menu
+    return side_menus
 
 
-def get_main_menu(html_soup):
+def get_main_nav_menu(html_soup):
     """
     Returns -> [list] list of all main menus[type dict]
       Menu -> [Dict] attrs:
@@ -49,30 +45,30 @@ def get_main_menu(html_soup):
     Params -> [requests.HTML object] HTML of web page.
     """
 
-    print(html_soup)
+    all_menu_div = html_soup.find("div#chromemenu", first=True)
+    main_menu_ul = all_menu_div.find("ul", first=True)
+    menu_li_items = main_menu_ul.find("li")
+    all_menu = []
+
+    for li_tag in menu_li_items:
+        a_tag = li_tag.find("a", first=True)
+        name = a_tag.text
+        link = a_tag.attrs.get("href").strip()
+        if link == "#":
+            menu_rel = a_tag.attrs.get("rel")[0]
+            name, link = __extract_dropdowns(html_soup, menu_rel)
+
+        full_link = f"{url}/{link.strip()}"
+        menu_dict = {"name": name, "link": full_link}
+        all_menu.append(menu_dict)
+
+    return all_menu
 
 
-#    all_menu_div = menu_page_soup.find("div#content_text", first=True)
-#    menu = all_menu_div.find("div#menu")
-#
-#    more_menu = []
-#    for menu in menu:
-#        date = menu.find("div.date", first=True).text
-#        content = menu.find("div.content", first=True).text
-#        title_div = menu.find("div.title1", first=True)
-#        title = title_div.find("a", first=True).text
-#        link_div = menu.find("div.more", first=True)
-#        link = url + link_div.find("a", first=True).attrs.get("href")
-#
-#        menu_dict = {"date": date, "title": title, "content": content, "link": link}
-#        more_menu.append(menu_dict)
-#
-#    return more_menu
-
-
-if __name__ == "__main__":
-    with open("../cache/index.html", "r") as rf:
-        data = rf.read()
-        html = HTML(html=data, url=url)
-
-    get_side_nav_menu(html)
+def __extract_dropdowns(html_soup, menu):
+    css_selector = f"div#{menu}"
+    menu_div = html_soup.find(css_selector, first=True)
+    a_tag = menu_div.find("a", first=True)
+    name = a_tag.text[2:]
+    link = a_tag.attrs.get("href")
+    return name, link

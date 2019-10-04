@@ -1,67 +1,84 @@
     
 * TCC-webapi
-  This is API for web resources that are scraped and distributed by TCC-web dev team.
-  The included sites are : 
+  This is API for web resources that are scraped and distributed from following sites;
   - [[http://trinitycollege.edu.np][Trinity college, Dilibazar, Kathmandu]]
 
 ** Requirements to use 
-   - Knowledge of working with json data in your programming language.
-   = Knowledge of sending http requests and receiving data.
+   Following knowledge in your favorable language is expected:
+     1. Sending http requests and receiving data.
+     2. Working with json data.
 
 ** Getting Started
-   The api currently doesnot feature any login or auth. Note however, this may change.
+   The hosted api can currently be accessed without any authentication. Note however, that this may change.
   
 *** API endpoints
-    The trinity website can visually divided into follwing parts
-    - top logo image
-    - main menus
-    - side menus
-    - notice
-    - events
-    - news
-    - login
-   
-    Thus you can access these parts with '/trinity/<topic>' url suffix
+    The trinity website can be visually divided into follwing parts,
+       
+      - top logo image
+      - main menus
+      - side menus
+      - notice
+      - events
+      - news
+      - login
+        
+    The api is designed to mimic this structure. 
+    Thus, you can access these parts with ```"/trinity/<topic>"``` url suffix.
     
-    1. To access top notices;
+    1. To access top notice:
     eg: 
-    'https://tcc_webapi.herokuapp.com/trinity/notice'
-    This will give you json data of the top 3/4 notices visible on homepage of website
     
-    2. For more flexibility, you can add arguements like
-    - '?all=True'
-    - '?page_link'
+      #+BEGIN_SRC js
+      'https://site.com/trinity/notice'
+      #+END_SRC
+      
+    This will give you json data of the top 3/4 notices visible on trinity homepage.
+
+    2. For more flexibility, you can add arguments like
+       - '?all=True'
+       - '?page_link=True'
+
     eg:
-    'https://tcc_webapi.herokuapp.com/trinity/notice?all=True'
+    
+      #+BEGIN_SRC js
+      'https://site.com/trinity/notice?all=True'
+      #+END_SRC
     
     This will give you a json data of all notices.
     
 ***** Json Data
-      In the eg of 1st no above. No arguements have been passed so top 3/4 notices will be returned.
-      A json object with following attributes will be returned
+      In 1st eg above, no arguments have been passed so top 3/4 notices will be returned.
+      A json object with following attributes will be returned.
       - title -> Title of notice
       - link -> URL of page for this notice 
         
       eg:
-      {
-      "title": 'First Term Examinations 2076',
-      "link": 'http://trinitycollege.edu.np?page=notice&type=notice&id=457ps'
-      }
       
-      In the second example of '?all=True'. All notices was requested. Note that here, some extra properties will also be added;
+      #+BEGIN_SRC js
+        {
+        "title": "First Term Examinations 2076",
+        "link": "http://trinitycollege.edu.np?page=notice&type=notice&id=457ps"
+        }
+      #+END_SRC
+      
+      In the 2nd example, all notices were requested. Note that here, some extra properties will also be added;
       - title -> Title of notice
       - link -> URL of page for this notice 
       - date -> Date when notice was issued
       - content -> small description of notice
+        
      eg:
+     
+     #+BEGIN_SRC js 
      {
-      "title": 'First Term Examinations 2076',
-      "link": 'http://trinitycollege.edu.np?page=notice&type=notice&id=457ps'
-      "date": 'Monday, 12 Aug 2019'
-      "content": 'Notice'
+      "title": "First Term Examinations 2076",
+      "link": "http://trinitycollege.edu.np?page=notice&type=notice&id=457ps",
+      "date": "Monday, 12 Aug 2019",
+      "content": "Notice"
       }
-      *NOTE* The content most of the time will be 'Notice' only or some short text
+      #+END_SRC
+     
+      *NOTE* Most of the time, the content field will have only 'Notice' or some short text.
 
-    The usage of all others are similar with only diffrent aspect being the url, arguements and the attributes of returning obejects.
-    The description and usage details of other endpoints are in documentation below.
- 
+    The usage of all others are similar with the only diffrence being the url, arguments and the attributes of returned json obejects.
+    The description and usage details of other endpoints are documented below.

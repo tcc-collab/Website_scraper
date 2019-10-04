@@ -2,8 +2,6 @@
 Notice: main.py module
 """
 
-from requests_html import HTMLSession
-
 from src.scrapers import TRINITY_LINK as url
 
 
@@ -61,7 +59,7 @@ def get_all_notice(html_soup):
 
     Params -> [requests.HTML object] HTML of web page.
     """
-    all_notice_div = notice_page_soup.find("div#content_text", first=True)
+    all_notice_div = html_soup.find("div#content_text", first=True)
     notices = all_notice_div.find("div#news")
 
     more_notices = []
