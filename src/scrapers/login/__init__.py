@@ -1,5 +1,5 @@
 """
-Notice package:
+Login package:
 get_login_captcha -> [str] math captcha in login.
 """
 

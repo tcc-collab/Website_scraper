@@ -14,6 +14,7 @@ TRINITY_LINK -> [str] URL of Trinity college, Dilibazar, Kathmandu
 __Functions__:
 get_html -> <requests.HTML> object
 """
+from pathlib import Path
 
 from requests_html import HTML, HTMLSession
 

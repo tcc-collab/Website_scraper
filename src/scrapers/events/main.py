@@ -73,6 +73,7 @@ def get_top_event(html_soup):
 
 
 if __name__ == "__main__":
+    test = """
     with open("../cache/events/all_events.html", "r", encoding="utf-8") as rf:
         data = rf.read()
         html = HTML(html=data, url=url)
@@ -81,7 +82,6 @@ if __name__ == "__main__":
     #    event_page_link(html)
     get_all_event(html)
 
-    top = """
     from requests_html import HTMLSession
 
     url = "http://trinitycollege.edu.np?page=event&type=event"

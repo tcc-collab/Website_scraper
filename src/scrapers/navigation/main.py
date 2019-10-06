@@ -28,7 +28,8 @@ def get_side_nav_menu(html_soup):
         link = menu_a_tag.attrs.get("href")
         full_link = url + link
         image = menu.find("img", first=True).attrs.get("src")
-        menu_dict = {"name": name, "link": full_link, "image": image}
+        image_link = url + "/" + image
+        menu_dict = {"name": name, "link": full_link, "image": image_link}
         side_menus.append(menu_dict)
 
     return side_menus
