@@ -1,84 +1,305 @@
-    
 * TCC-webapi
   This is API for web resources that are scraped and distributed from following sites;
   - [[http://trinitycollege.edu.np][Trinity college, Dilibazar, Kathmandu]]
 
-** Requirements to use 
+** Requirements to use
    Following knowledge in your favorable language is expected:
      1. Sending http requests and receiving data.
      2. Working with json data.
 
 ** Getting Started
    The hosted api can currently be accessed without any authentication. Note however, that this may change.
-  
+
 *** API endpoints
     The trinity website can be visually divided into follwing parts,
-       
       - top logo image
-      - main menus
-      - side menus
+      - main nav menus
+      - side nav menus
+      - downloadable items
       - notice
       - events
       - news
-      - login
-        
-    The api is designed to mimic this structure. 
-    Thus, you can access these parts with ```"/trinity/<topic>"``` url suffix.
-    
+      - footer
+
+    The api is designed to mimic this structure.
+    Thus, you can access these parts with #+BEGIN_SRC js "/trinity/<topic>" #+END_SRC url suffix.
+
     1. To access top notice:
-    eg: 
-    
+    eg:
+
       #+BEGIN_SRC js
-      'https://site.com/trinity/notice'
+      "https://site.com/trinity/notice"
       #+END_SRC
-      
+
     This will give you json data of the top 3/4 notices visible on trinity homepage.
 
     2. For more flexibility, you can add arguments like
-       - '?all=True'
-       - '?page_link=True'
+       - '?type=top'
+       - '?type=all'
+       - '?type=link'
 
     eg:
-    
+
       #+BEGIN_SRC js
-      'https://site.com/trinity/notice?all=True'
+      "https://site.com/trinity/notice?type=all"
       #+END_SRC
-    
+
     This will give you a json data of all notices.
-    
+
+    *NOTE* Not specifying any arguments is equivalent to specifying '?type=top' argument.
+
 ***** Json Data
-      In 1st eg above, no arguments have been passed so top 3/4 notices will be returned.
-      A json object with following attributes will be returned.
+      In above examples, when top notices are requested,
+      A LIST/ARRAY of json objects each with following attributes will be returned.
       - title -> Title of notice
-      - link -> URL of page for this notice 
-        
+      - link -> URL of page for this notice
+
       eg:
-      
+
       #+BEGIN_SRC js
-        {
-        "title": "First Term Examinations 2076",
-        "link": "http://trinitycollege.edu.np?page=notice&type=notice&id=457ps"
-        }
+        [
+         {
+         "title": "First Term Examinations 2076",
+         "link": "http://trinitycollege.edu.np?page=notice&type=notice&id=457ps"
+         }
+        ]
       #+END_SRC
-      
-      In the 2nd example, all notices were requested. Note that here, some extra properties will also be added;
+
+      Similarly when all notices are requested. A LIST/ARRAY of json objects are returned.
+      Each json object have following properies;
       - title -> Title of notice
-      - link -> URL of page for this notice 
+      - link -> URL of page for this notice
       - date -> Date when notice was issued
       - content -> small description of notice
-        
-     eg:
-     
-     #+BEGIN_SRC js 
-     {
-      "title": "First Term Examinations 2076",
-      "link": "http://trinitycollege.edu.np?page=notice&type=notice&id=457ps",
-      "date": "Monday, 12 Aug 2019",
-      "content": "Notice"
-      }
-      #+END_SRC
-     
+
+      eg:
+
+     #+BEGIN_SRC js
+        [
+         {
+         "title": "First Term Examinations 2076",
+         "link": "http://trinitycollege.edu.np?page=notice&type=notice&id=457ps",
+         "date": "Monday, 12 Aug 2019",
+         "content": "Notice"
+         }
+       ]
+     #+END_SRC
+
       *NOTE* Most of the time, the content field will have only 'Notice' or some short text.
+
+      Obiously when when link is requested a string of link is returned. In case of notice the url of
+      all notices issued by trinity is returned.
+
+      eg:
 
     The usage of all others are similar with the only diffrence being the url, arguments and the attributes of returned json obejects.
     The description and usage details of other endpoints are documented below.
+
+** Documentation
+   
+     #+BEGIN_SRC js 
+
+     #+END_SRC
+
+   
+*** Notice
+    *ENDPOINT* : '/notice'
+    *ARGS* :
+          - '?type=all, -> All notice
+          - '?type=top' -> Top notice
+          - '?type=link' -> Notice page link
+            
+**** All notice
+     Returns a list/array of json objects:
+     
+     eg:
+     
+     #+BEGIN_SRC js 
+        [  
+         {
+         "title": "First Term Examinations 2076",
+         "link": "http://trinitycollege.edu.np?page=news&type=notice&id=457ps",
+         "date": "Monday, 12 Aug 2019",
+         "content": "Notice"
+         }
+       ]
+     #+END_SRC
+
+**** Top notice
+     Returns a list/array of json objects:
+     
+     eg:
+     
+     #+BEGIN_SRC js 
+        [  
+         {
+         "title": "First Term Examinations 2076",
+         "link": "http://trinitycollege.edu.np?page=news&type=notice&id=457ps",
+         }
+       ]
+     #+END_SRC
+   
+**** Notice page link
+     Returns a json string of url of notice page
+     
+     eg:
+     
+     #+BEGIN_SRC js 
+         "http://trinitycollege.edu.np?page=news&type=notice",
+     #+END_SRC
+
+
+*** News
+    *ENDPOINT* : '/news
+    *ARGS* :
+          - '?type=all, -> All news
+          - '?type=top' -> Top news
+          - '?type=link' -> News page link
+            
+**** All news
+     Returns a list/array of json objects:
+     
+     eg:
+     
+     #+BEGIN_SRC js 
+        [  
+         {
+         "date": "Monday, 12 Aug 2019",
+         "title": "Congratulations! Trinitians",
+         "content": "Congratulations"
+         "link": "http://trinitycollege.edu.np?page=news&type=news&id=579",
+         }
+       ]
+     #+END_SRC
+
+**** Top news
+     Returns a list/array of json objects:
+     
+     eg:
+     
+     #+BEGIN_SRC js 
+        [  
+         {
+         "title": "Congratulations! Trinitians",
+         "link": "http://trinitycollege.edu.np?page=news&type=news&id=579",
+         }
+       ]
+     #+END_SRC
+   
+**** News page link
+     Returns a json string of url of news page
+     
+     eg:
+     
+     #+BEGIN_SRC js 
+         "http://trinitycollege.edu.np?page=news&type=news",
+     #+END_SRC
+     
+     
+*** Events
+    *ENDPOINT* : '/news
+    *ARGS* :
+          - '?type=top' -> Top events
+          - '?type=link' -> Events page link
+            
+**** Top events
+     Returns a list/array of json objects:
+     
+     eg:
+     
+     #+BEGIN_SRC js 
+        [  
+         {
+         "title": "Extra Tutorial Classes",
+         "subtitle": "+2 Students/A Level students",
+         "description": "Extra tutorial classes on particular sujects as",
+         "nepali_date": "27 Ashwin",
+         "english_date": "14 Oct",
+         "link": "http://trinitycollege.edu.np/eventdetails.php?i=653",
+         }
+       ]
+     #+END_SRC
+   
+**** Events page link
+     Returns a json string of url of events page
+     
+     eg:
+     
+     #+BEGIN_SRC js 
+       "http://trinitycollege.edu.np/trinity.php?cal=calen"
+     #+END_SRC
+ 
+
+     
+*** Navigation
+    *ENDPOINT* : '/navigation
+    *ARGS* :
+          - '?type=side' -> Side navigation
+          - '?type=main' -> Main navigation
+ 
+**** Side navigation
+     Returns a list/array of json objects              
+     
+     eg:
+     
+     #+BEGIN_SRC js
+        [  
+         {
+         "name": "Home",
+         "link": "http://trinitycollege.edu.np/index.php",
+         "image": "http://trinitycollege.edu.np/images/house_go.png",
+         }
+       ]
+     #+END_SRC
+
+
+
+**** Main navigation
+     Returns a list/array of json objects              
+     
+     eg:
+     
+     #+BEGIN_SRC js
+        [  
+         {
+         "name": "Home",
+         "link": "http://trinitycollege.edu.np/index.php",
+         }
+       ]
+     #+END_SRC
+
+
+  
+*** Footer
+    *ENDPOINT* : '/footer'
+    
+    Returns a json object.
+    
+    eg:
+
+     #+BEGIN_SRC js
+       {
+         "privacy_policy": "http://trinitycollege.edu.np//index.php?page=content&id=59",
+         "disclaimer": "http://trinitycollege.edu.np//index.php?page=content&id=61",
+         "youtube" : "https://www.youtube.com/channel/UCI9QxocOF5Dy5_skkOYIGiA"
+         "twitter" : "https://twitter.com/TrinityHSSchool"
+         "facebook" : "https://www.facebook.com/Trinity-International-HSSCollege-123877371368846/?fref=ts"
+       }
+     #+END_SRC
+
+
+*** Downloadable
+    *ENDPOINT* : '/downloadable'
+
+    Returns a json object.
+
+    eg:
+
+     #+BEGIN_SRC js
+       {
+         "left": {
+             "caption" : "http://trinitycollege.edu.np//documents/timetable2019.pdf"
+             "link": "http://trinitycollege.edu.np//documents/timetable2019.pdf"
+         },
+       }
+     #+END_SRC

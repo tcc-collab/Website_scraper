@@ -2,8 +2,6 @@
 Notice: main.py module
 """
 
-from src.scrapers import TRINITY_LINK as url
-
 
 def notice_page_link(html_soup):
     """
@@ -16,13 +14,13 @@ def notice_page_link(html_soup):
 
     more_notices_p_tag = notice_div.find("p")[-1]
     more_notices_a_tag = more_notices_p_tag.find("a", first=True)
-    more_notices_link = url + more_notices_a_tag.attrs["href"]
+    more_notices_link = html_soup.url + more_notices_a_tag.attrs["href"]
     return more_notices_link
 
 
 def get_top_notice(html_soup):
     """
-    Returns -> [list] list of latest 3 notices[type dict]
+    Returns -> [list] list of latest 3 notices
       Notice -> [Dict] attrs:
         'title' -> [str] title of notice
         'link' -> [str] full link for the notice
@@ -40,7 +38,7 @@ def get_top_notice(html_soup):
     for notice in notices:
         title = notice.text
         link = notice.find("a", first=True).attrs.get("href")
-        full_link = url + link
+        full_link = html_soup.url + link
         notice_dict = {"title": title, "full_link": full_link}
         top_notices.append(notice_dict)
 
@@ -49,7 +47,7 @@ def get_top_notice(html_soup):
 
 def get_all_notice(html_soup):
     """
-    Returns -> [list] list of all notices[type dict]
+    Returns -> [list] list of all notices
       Notice -> [Dict] attrs:
         'title' -> [str] title of notice
         'link' -> [str] full link for the notice
@@ -69,7 +67,7 @@ def get_all_notice(html_soup):
         title_div = notice.find("div.title1", first=True)
         title = title_div.find("a", first=True).text
         link_div = notice.find("div.more", first=True)
-        link = url + link_div.find("a", first=True).attrs.get("href")
+        link = html_soup.url + link_div.find("a", first=True).attrs.get("href")
 
         notice_dict = {"date": date, "title": title, "content": content, "link": link}
         more_notices.append(notice_dict)

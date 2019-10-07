@@ -5,4 +5,4 @@ news_page_link -> [str] link of news page containing all notices
 get_all_news -> [List] list of all news[type dict]
 """
 
-from src.scrapers.news.main import get_all_news, get_top_news, news_page_link
+from webapi.scrapers.news.main import get_all_news, get_top_news, news_page_link

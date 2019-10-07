@@ -2,8 +2,6 @@
 Navigation: main.py module
 """
 
-from src.scrapers import TRINITY_LINK as url
-
 
 def get_side_nav_menu(html_soup):
     """
@@ -26,9 +24,9 @@ def get_side_nav_menu(html_soup):
         menu_a_tag = menu.find("a", first=True)
         name = menu_a_tag.text
         link = menu_a_tag.attrs.get("href")
-        full_link = url + link
+        full_link = html_soup.url + link
         image = menu.find("img", first=True).attrs.get("src")
-        image_link = url + "/" + image
+        image_link = html_soup.url + image
         menu_dict = {"name": name, "link": full_link, "image": image_link}
         side_menus.append(menu_dict)
 
@@ -59,7 +57,7 @@ def get_main_nav_menu(html_soup):
             menu_rel = a_tag.attrs.get("rel")[0]
             name, link = __extract_dropdowns(html_soup, menu_rel)
 
-        full_link = f"{url}/{link.strip()}"
+        full_link = f"{html_soup.url}/{link.strip()}"
         menu_dict = {"name": name, "link": full_link}
         all_menu.append(menu_dict)
 

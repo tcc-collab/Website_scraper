@@ -2,11 +2,6 @@
 News: main.py module
 """
 
-from requests_html import HTML
-
-from src.scrapers import TRINITY_LINK as url
-from src.scrapers import fetch_html
-
 
 def news_page_link(html_soup):
     """
@@ -18,13 +13,13 @@ def news_page_link(html_soup):
 
     more_news_div_tag = news_div.find("div")[-1]
     more_news_a_tag = more_news_div_tag.find("a", first=True)
-    more_news_link = url + more_news_a_tag.attrs["href"]
+    more_news_link = html_soup.url + more_news_a_tag.attrs["href"]
     return more_news_link
 
 
 def get_top_news(html_soup):
     """
-    Returns -> [list] list of latest news[type dict]
+    Returns -> [list] list of latest news
       News -> [Dict] attrs:
         'title' -> [str] title of news
         'link' -> [str] full link for the news
@@ -42,7 +37,7 @@ def get_top_news(html_soup):
         news_a_tag = news.find("a", first=True)
         title = news_a_tag.text
         link = news_a_tag.attrs.get("href")
-        full_link = url + link
+        full_link = html_soup.url + link
         news_dict = {"title": title, "full_link": full_link}
         top_news.append(news_dict)
 
@@ -51,7 +46,7 @@ def get_top_news(html_soup):
 
 def get_all_news(html_soup):
     """
-    Returns -> [list] list of all news[type dict]
+    Returns -> [list] list of all news
       News -> [Dict] attrs:
         'title' -> [str] title of news
         'link' -> [str] full link for the news
@@ -72,7 +67,7 @@ def get_all_news(html_soup):
         title_div = news.find("div.title1", first=True)
         title = title_div.find("a", first=True).text
         link_div = news.find("div.more", first=True)
-        link = url + link_div.find("a", first=True).attrs.get("href")
+        link = html_soup.url + link_div.find("a", first=True).attrs.get("href")
 
         news_dict = {"date": date, "title": title, "content": content, "link": link}
         print(news_dict)

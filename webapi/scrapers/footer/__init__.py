@@ -1,21 +1,22 @@
 """
 Footer package:
 
-get_footer()
- Returns -> Dict {
-   'privacy_policy': link to site's privacy policy
-   'disclaimer': link to site's disclaimer
-   'youtube': trinity's youtube channel
-   'twitter': trinity's twitter handle
-   'facebook': trinity's facebook page
-}
+get_footer() -> Dict
 """
 
-from src.scrapers import TRINITY_LINK as url
-from src.scrapers import get_html
+from webapi.scrapers import get_html
 
 
 def get_footer():
+    """
+    Returns -> Dict {
+    'privacy_policy': link to site's privacy policy
+    'disclaimer': link to site's disclaimer
+    'youtube': trinity's youtube channel
+    'twitter': trinity's twitter handle
+    'facebook': trinity's facebook page
+    }
+    """
     html_soup = get_html()
     footer_div = html_soup.find("#footer", first=True)
     legal_div = footer_div.find("div", first=True)
@@ -23,8 +24,8 @@ def get_footer():
 
     privacy_policy = a_tags[0].attrs.get("href")
     disclaimer = a_tags[1].attrs.get("href")
-    privacy_policy_link = url + "/" + privacy_policy
-    disclaimer_link = url + "/" + disclaimer
+    privacy_policy_link = html_soup.url + "/" + privacy_policy
+    disclaimer_link = html_soup.url + "/" + disclaimer
 
     # TODO For now social media links are hardcoded :)
     facebook = "https://www.facebook.com/"

@@ -2,10 +2,6 @@
 Events: main.py module
 """
 
-from requests_html import HTML
-
-from src.scrapers import TRINITY_LINK as url
-
 
 def event_page_link(html_soup):
     """
@@ -19,14 +15,14 @@ def event_page_link(html_soup):
 
     view_more_div = event_div.find("div.viewmr", first=True)
     view_more_a_tag = view_more_div.find("a", first=True)
-    more_events_link = url + "/" + view_more_a_tag.attrs.get("href")
+    more_events_link = html_soup.url + "/" + view_more_a_tag.attrs.get("href")
     print(more_events_link)
     return more_events_link
 
 
 def get_top_event(html_soup):
     """
-    Returns -> [list] list of latest event[type dict]
+    Returns -> [list] list of latest event
       Event -> [Dict] attrs:
         'title' -> [str] title of event
         'link' -> [str] full link for the event
@@ -54,7 +50,7 @@ def get_top_event(html_soup):
             desc_a_tag = desc_div.find("a", first=True)
             description = desc_a_tag.text
             link = desc_a_tag.attrs.get("href")
-            full_link = url + link
+            full_link = html_soup.url + link
         else:
             description, full_link = None, None
 
@@ -70,25 +66,3 @@ def get_top_event(html_soup):
         top_events.append(event_dict)
 
     return top_events
-
-
-if __name__ == "__main__":
-    test = """
-    with open("../cache/events/all_events.html", "r", encoding="utf-8") as rf:
-        data = rf.read()
-        html = HTML(html=data, url=url)
-
-    #    get_top_event(html)
-    #    event_page_link(html)
-    get_all_event(html)
-
-    from requests_html import HTMLSession
-
-    url = "http://trinitycollege.edu.np?page=event&type=event"
-    session = HTMLSession()
-    result = session.get(url)
-
-    with open("../cache/events/all_events.html", "w") as rf:
-        data = rf.write(result.html.html)
-        # html = HTML(html=data, url=url)
-    """

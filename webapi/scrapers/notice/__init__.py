@@ -5,5 +5,5 @@ notice_page_link -> [str] link of notice page containing all notices
 get_all_notice -> [List] list of all notices[type dict]
 """
 
-from src.scrapers.notice.main import (get_all_notice, get_top_notice,
+from webapi.scrapers.notice.main import (get_all_notice, get_top_notice,
                                       notice_page_link)

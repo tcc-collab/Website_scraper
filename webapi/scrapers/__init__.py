@@ -18,7 +18,7 @@ from pathlib import Path
 
 from requests_html import HTML, HTMLSession
 
-CACHE_DIR = "/home/h/website_scraper/src/scrapers/cache/"
+CACHE_DIR = "/home/h/website_scraper/webapi/scrapers/cache/"
 TRINITY_LINK = "http://trinitycollege.edu.np/"
 
 
@@ -41,8 +41,8 @@ def __get_html_from_cache(url):
         url = [str] URL of page to load
     """
     event_url = "http://trinitycollege.edu.np/trinity.php?cal=calen"
-    news_url = "http://trinitycollege.edu.np?page=news&type=news"
-    notice_url = "http://trinitycollege.edu.np?page=notice&type=notice"
+    news_url = "http://trinitycollege.edu.np/?page=news&type=news"
+    notice_url = "http://trinitycollege.edu.np/?page=news&type=notice"
 
     link_resource_map = {
         TRINITY_LINK: "index.html",

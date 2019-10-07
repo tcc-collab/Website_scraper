@@ -3,7 +3,7 @@ Login package:
 get_login_captcha -> [str] math captcha in login.
 """
 
-from src.scrapers import get_html
+from webapi.scrapers import get_html
 
 
 def get_login_captcha():
